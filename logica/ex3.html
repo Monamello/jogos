@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<script type="text/javascript">
+			function finalizar(){
+				var nome = document.getElementById("nome").value;
+
+				var valor = document.getElementById("valor").value;
+				var valor = parseInt(valor);
+
+				var quant = document.getElementById("quant").value;
+				var quant = parseInt(quant);
+
+				var desconto = document.getElementById("desconto").value;
+				var desconto = parseInt(desconto);
+
+
+
+				conta = (quant * valor);
+				valor_final = (conta - desconto);
+
+				alert(valor_final);
+
+
+
+				// var nome = Util.getValue("nome");
+
+				// var valor = Util.getValue("valor");
+				// var valor = Util.getFloat(valor);
+				// // var valor = parseInt(valor);
+
+				// var quant = Util.getValue("quant");
+				// var quant = Util.getInt(quant);
+
+				// var desconto = Util.getValue("desconto");
+				// var desconto = Util.getFloat(desconto);
+
+
+
+			}
+
+
+		</script>
+	</head>
+	<body>
+		<p>
+			<label>
+				Seu nome:
+				<input type="text" id="nome">
+			</label>
+		</p>
+
+		<p>
+			<label>
+				Valor:
+				<input type="number" id="valor">
+			</label>
+		</p>
+
+		<p>
+			<label>
+				Quantidade:
+				<input type="number" id="quant">
+			</label>
+		</p>
+
+		<p>
+			<label>
+				Desconto da compra:
+				<input type="number" id="desconto">
+			</label>
+		</p>
+
+		<p>
+			<button onclick="finalizar()">Finalizar</button>
+		</p>
+
+		<hr>
+		<div id="res"></div>
+
+	</body>
+</html>

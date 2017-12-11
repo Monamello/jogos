@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <title>Tela3</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="estilo.css">
+    <script type="text/javascript">
+      
+      var minutos = 00;
+      var segundos = 20;
+      var centesimos = 00;
+      minutos = parseInt(minutos);
+      segundos = parseInt(segundos);
+      centesimos = parseInt(centesimos);
+      
+      interval = setInterval("temporizador()", 10);
+      
+      function temporizador() {
+        if ((centesimos == 0) && (segundos == 0) && (minutos == 0)){
+          clearInterval(interval);
+          // alert("O tempo acabou!");
+        }else {
+          centesimos--;
+          if (centesimos <= 0) {
+            if (segundos > 0) {
+              segundos--;
+              centesimos = 99;
+            }           
+          }
+          if (segundos == 0) {
+            if (minutos > 0) {
+              minutos--;
+              segundos = 59;
+            }           
+          }
+
+          if(minutos<10) {
+            document.getElementById("min").innerHTML = "0"+minutos;
+          } else {
+            document.getElementById("min").innerHTML = minutos;
+          }
+          
+          if(segundos<10){
+            document.getElementById("seg").innerHTML = "0"+segundos;
+          }else{
+            document.getElementById("seg").innerHTML = segundos;
+          }
+        }
+      }
+      
+    </script>
+
+  </head>
+
+  <body>
+
+    <!--CABEÇALHO-->
+    <div class="container col-xs-12 col-md-12 ">
+      <div align="center">
+        <div class="jumbotron mt-6 cabecalho_tela">
+         <h1>Jogo de Matemática</h1>
+        </div>
+      </div>
+    </div>
+
+    <!--TEMPORIZADOR-->
+    <div class="container col-xs-1 col-md-6">
+      <div class="container jumbotron  temporizador fonte_temporizador" align="center">
+        <label id="min">00</label>
+        :
+        <label id="seg">00</label>   
+      </div>
+    </div>
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script> -->
+  </body>
+</html>

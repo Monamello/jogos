@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<script type="text/javascript">
+			function verificar() {
+				var nome = document.getElementById("nome").value;
+				var idade = document.getElementById("idade").value;
+				var idade = parseInt(idade);
+				var altura = document.getElementById("altura").value;
+				var altura = parseFloat(altura);
+				var res = document.getElementById("res").innerHTML;
+
+				if(idade >= 18){
+					alert(nome + " é maior de idade!")
+				}else{
+					alert(nome + "é menor de idade!")
+				}
+
+				if (altura <= 1.77 && altura >= 1.68) {
+					alert("Altura esta entre 1.77 e 1.68!")
+				}else{
+					alert("Altura esta fora dos parametros!")
+					
+
+				}
+
+			}
+
+		</script>
+	</head>
+	<body>
+		<p>
+			<label>
+				Seu nome:
+				<input type="text" id="nome">
+			</label>
+		<p/>
+		
+		<p>
+			<label>
+				Sua idade:
+				<input type="number" id="idade">
+			</label>
+		<p/>	
+
+		<p>
+			<label>
+				Seu altura:
+				<input type="number" id="altura">
+			</label>
+		<p/>
+
+		<p>
+			<button onclick="verificar()">Verificar</button>
+		</p>
+		<hr>
+		<div id="res"></div>
+
+	</body>
+</html>

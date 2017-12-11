@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <title>Tela2</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="estilo.css">
+        <script src="geral.js" charset="utf-8"></script>
+      </head>
+      <body>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="tela1_dois_jogos.html">Jogos</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                  <a class="nav-link btn btn-link" onclick="sair()">Sair</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="ranking.html">Ranking</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        <div> <!--div geral inicio-->
+
+            <div class="container jumbotron cor_memoria">
+                <h1 align="center" class="cor_memoria">Jogo da Memória</h1>
+            </div>
+
+            <div id="opcoes">
+    			<div class="form-control container">
+    				<h5>Selecione o Nível:</h5>
+
+    				<select id="nivel" class="form-control col" >
+    					<option value="0">Selecione o nível</option>
+    					<option value="2">Nível 1</option>
+    					<option value="4">Nível 2</option>
+    					<option value="8">Nível 3</option>
+    				</select>
+
+                </br>
+
+                <!--BOTÃO JOGAR-->
+                <div class="col" align="center">
+                    <button class="btn btn-warning btn-lg btn-block"
+                    onclick="jogar()">
+                        Jogar!
+                    </button>
+                </div>
+    			</div>
+
+
+    		</div>
+
+            <!--CARTÕES JOGO-->
+            <div class="container" id="jogo">
+            </div>
+        </div><!--div geral final-->
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script type="text/javascript">
+            var logado = localStorage.getItem("logado");
+            if (! logado) {
+                window.location="login.html";
+            }
+            var acertos = 0;
+            var erros = 0;
+
+            function acertou() {
+                $(".ativo").addClass("acerto").removeClass("ativo");
+                acertos++;
+                var quantidade_cartas = $(".cartao").length;
+                if ((quantidade_cartas/2) == acertos) {
+                    alert("UHUL, JOGO ACABOU!");
+                }
+            }
+
+            function errou() {
+                $(".ativo").removeClass("ativo");
+                erros++;
+            }
+
+            function atualizarClick() {
+                $('.cartao').click(function(event) {
+                    if (!($(this).hasClass("ativo")) && !($(this).hasClass("acerto"))) {
+                        $(this).addClass("ativo");
+                        if ($(".ativo").length == 2) {
+                            var ativos = $(".ativo")
+                            var imagem1 = $(ativos[0]).children("img")[0];
+                            var imagem2 = $(ativos[1]).children("img")[0];
+                            if (imagem1.src == imagem2.src) {
+                                setTimeout("acertou()", 200);
+                            } else {
+                                setTimeout("errou()", 300);
+                            }
+                        }
+                    }
+                });
+            }
+
+            function gerarCartas() {
+                var nivel = $("#nivel").val();
+                nivel = parseInt(nivel);
+                var quantidade_cartas = nivel * nivel;
+                var newArray = [];
+                while (newArray.length != quantidade_cartas) {
+                    var i = Math.floor(Math.random() * (quantidade_cartas/2));
+                    if (newArray.indexOf(i) == newArray.lastIndexOf(i)) {
+                        newArray.push(i);
+                    }
+                }
+                return newArray;
+            }
+
+            function jogar() {
+                var nivel = $("#nivel").val();
+                nivel = parseInt(nivel);
+                if (nivel != 0) {
+                    $("#opcoes").hide();
+                    $("#jogo").show();
+                    var cartas = gerarCartas();
+                    var html = "";
+                    for (var i = 0; i < cartas.length; i++) {
+                        var carta = cartas[i];
+                        if (((i+1) % nivel) == 1) {
+                            html = html + "<div class='row linha'>"
+                        }
+                        html = html + "<div class='col'><div class='cartao'><img src='imagens/"+carta+".png' class='img-fluid imagem-carta'></div></div>";
+                        if (((i+1) % nivel) == 0) {
+                            html = html + "</div>"
+                        }
+                    }
+                    $("#jogo").html(html);
+                    atualizarClick();
+                } else {
+                    alert("Selecione o nível!")
+                }
+
+            }
+
+        </script>
+    </body>
+</html>

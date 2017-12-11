@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <title>seleciona_memoria</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="estilo.css">
+        <script type="text/javascript">
+
+            function jogar() {
+                // document.getElementById("imagem").style.display = "block";
+                // document.getElementById("cartao").style.display = "none";
+
+            }
+
+        </script>
+    </head>
+    <body>
+        <div> <!--div geral inicio-->
+
+            <div class="container jumbotron cor_memoria">
+                <h1 align="center" class="cor_memoria">Jogo da Memória</h1>
+            </div>
+
+            <div class="form-control col-md-6 cor_seleciona_memoria container">
+				<h5>Selecione o Nível:</h5>
+				<select id="nivel" class="form-control col-md-6 " >
+					<option>Selecione o nível</option>
+					<option>Nível 1</option>
+					<option>Nível 2</option>
+					<option>Nível 3</option>
+				</select>
+			</div>
+
+            <br/>
+
+            <!--BOTÃO JOGAR-->
+			<div class="col-md-6  container tam" align="center">
+				<button class="btn btn-warning btn-lg btn-block"
+					onclick="jogar()">
+					Jogar!
+				</button>
+			</div>
+
+
+
+        </div><!--div geral final-->
+    </body>
+</html>

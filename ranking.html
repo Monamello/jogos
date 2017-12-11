@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Ranking MTM</title>
+		<script>
+			var Mp;
+			var codigoGeral;
+
+			function init(){
+
+				codigoGeral = localStorage.getItem("codigoGeral");
+				if(codigoGeral==null){
+					codigoGeral = 0;
+				}
+
+				var dadosTxt = localStorage.getItem("dados");
+				Mp = JSON.parse(dadosTxt);
+				if(Mp==null){
+					Mp = [];
+				}
+				montarTabelaHTML();
+			}
+
+			function enviar(){
+				//Resgatar dados do formulário
+				var campoNome = document.getElementById("nome");
+				var campoIdade = document.getElementById("idade");
+				codigoGeral++;
+				var p = {"id":codigoGeral, "nome":campoNome.value, "idade":campoIdade.value};
+
+				//Adicionar esta pessoa na Matriz Mp
+				Mp.push(p);
+				salvar();
+
+				montarTabelaHTML();
+			}
+
+			function salvar(){
+				var MpTXT = JSON.stringify(Mp);
+				localStorage.setItem("dados", MpTXT);
+				localStorage.setItem("codigoGeral", codigoGeral);
+			}
+			//MONTA TABELA -------------------
+			function montarTabelaHTML(){
+				var linhas = "";
+				for(var i=0; i<Mp.length; i++){
+					var pessoa = Mp[i];
+					linhas += "<tr>";
+					linhas += "<td>"+i+"</td>";
+					linhas += "<td>"+pessoa.id+"</td>";
+					linhas += "<td>"+pessoa.nome+"</td>";
+					linhas += "<td>"+pessoa.idade+"</td>";
+					linhas += "<td><a href='javascript:void(0)' onclick='excluir("+i+")'>Excluir</a></td>";
+					linhas += "</tr>";
+				}
+				var tbody = document.getElementById("lista");
+				tbody.innerHTML = linhas;
+			}
+
+			function excluir(indice){
+				var pe = Mp[indice];
+				var conf = confirm("Deseja excluir o "+pe.nome+"?");
+				if(conf==true){
+					Mp.splice(indice, 1);
+				}
+				salvar();
+				montarTabelaHTML();
+			}
+
+			function resetar(){
+				Mp = [];
+				codigoGeral = 0;
+				salvar();
+				montarTabelaHTML();
+			}
+
+
+			function pesquisar(){
+				var codPesq = document.getElementById("pesquisa").value;
+				var indicePesq = -1;
+
+				for(var i=0; i<Mp.length; i++){
+					var pe = Mp[i];
+					if(pe.id == codPesq){
+						indicePesq = i;
+						break;
+					}
+				}
+
+				if(indicePesq!=-1){
+					var pessoaPesq = Mp[indicePesq];
+					alert(pessoaPesq.nome+" "+pessoaPesq.idade);
+				}else{
+					alert("Nada encontrado");
+				}
+
+			}
+
+
+			function pesquisaPorIdade(){
+				var idadePesq = prompt("Qual idade pesquisar?");
+				var Mres = [];
+				for(var i=0; i<Mp.length; i++){
+					if(Mp[i].idade == idadePesq){
+						Mres.push(Mp[i]);
+					}
+				}
+
+				montarTabelaPesquisa(Mres);
+			}
+
+			function montarTabelaPesquisa(Mres){
+				var linhas = "";
+				for(var i=0; i<Mres.length; i++){
+					var pessoa = Mres[i];
+					linhas += "<tr>";
+					linhas += "<td>"+i+"</td>";
+					linhas += "<td>"+pessoa.id+"</td>";
+					linhas += "<td>"+pessoa.nome+"</td>";
+					linhas += "<td>"+pessoa.idade+"</td>";
+					linhas += "<td><a href='javascript:void(0)' onclick='excluir("+i+")'>Excluir</a></td>";
+					linhas += "</tr>";
+				}
+				var tbody = document.getElementById("lista");
+				tbody.innerHTML = linhas;
+			}
+
+		</script>
+	</head>
+	<body onload="init()">
+		<button onclick="pesquisaPorIdade()">Pesquisar por idade</button>
+		<br>
+		<button onclick="montarTabelaHTML()">LIMPAR PESQUISA</button>
+		<br>
+		<button onclick="resetar()">Resetar</button>
+		<hr>
+		Pesquise um código:
+		<input type="text" id="pesquisa" onblur="pesquisar()">
+
+
+	<br><br>
+		<label>
+			Nome:
+			<input type="text" id="nome">
+		</label>
+		<br>
+
+		<label>
+			Idade:
+			<input type="text" id="idade">
+		</label>
+		<br>
+		<button onclick="enviar()">Enviar</button>
+		<hr>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>Indice</th>
+					<th>Codigo</th>
+					<th>Nome</th>
+					<th>Idade</th>
+					<th>Excluir</th>
+				</tr>
+			</thead>
+			<tbody id="lista">
+				<tr>
+					<td>0</td>
+					<td>1</td>
+					<td>Marcio</td>
+					<td>37</td>
+					<td><a href="javascript:void(0)" onclick="excluir(0)">Excluir</a></td>
+				</tr>
+
+				<tr>
+					<td>1</td>
+					<td>2</td>
+					<td>Pedro</td>
+					<td>29</td>
+					<td><a href="javascript:void(0)" onclick="excluir(1)">Excluir</a></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+
+	</body>
+</html>

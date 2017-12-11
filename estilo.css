@@ -1,0 +1,157 @@
+
+
+.op {
+    opacity: 0.5;
+
+}
+
+.imagem {
+	background-image: url("imagens/quadro.jpg");
+	padding-bottom: 10%;
+}
+
+.imagem2{
+    background-image: url("imagens/cerebro.png");
+}
+
+.center{
+	text-align: center;
+
+}
+
+.cabecalho_tela{
+
+	background-color: #2E8B57;
+}
+
+
+.tam {
+	padding-bottom: 50%;
+}
+
+.cor_verde{
+	background-color: #8FBC8F;
+}
+
+.fundo_titulos{
+	background-color: #2E8B57;
+}
+
+.temporizador{
+	background-color: #8FBC8F;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+.fonte_temporizador{
+	font-weight: bold;
+	font-size: 30px;
+	font-family: arial, sans-serif;
+}
+
+.apaga {
+    display: none;
+}
+
+.aparece {
+	display: block;
+}
+
+.input_resposta{
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:3px;
+	padding-right:3px;
+}
+
+.aumenta_div{
+padding-bottom:15px;
+}
+
+.borda_nula{
+	border: 0px
+}
+
+.tamanho{
+    width: 100%;
+    height: 100%;
+}
+
+.texto_login{
+	color: #000080;
+}
+
+.texto_login_memoria{
+    color: #d87924;
+}
+
+.cor_memoria{
+    background-color: #d87924;
+    color: white;
+    font-size: 60px;
+}
+
+.cor_seleciona_memoria{
+    background-color: #ecaf52;
+}
+
+.cartao{
+    background-color: #d87924;
+    text-align: center;
+    width: 100%;
+    height: 95px;
+    padding: 5px;
+}
+
+.linha {
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#elemento {
+    margin-top: 15px;
+    margin-right: 10px;
+    margin-bottom: 25px;
+    margin-left: 35px;
+}
+
+.centra_img{
+    image-orientation: center;
+}
+
+.imagem-carta {
+    display: none;
+    height: 85px;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+.ativo > .imagem-carta, .acerto > .imagem-carta {
+    display: inline;
+}
+
+#jogo {
+    display: none;
+}
+
+.jogo {
+    color: black;
+    border: 0px;
+    background-position: center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    height: 200px;
+    margin-bottom: 15px;
+}
+
+.jogo:hover {
+    border:0;
+    color: black;
+}

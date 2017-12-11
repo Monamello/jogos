@@ -1,0 +1,142 @@
+<html lang="pt-br">
+    <head>
+        <title>Tela2</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="estilo.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+        <script type="text/javascript">
+            function getPessoas() {
+                var pessoas = localStorage.getItem("pessoas");
+                Pessoas = JSON.parse(pessoas);
+                if(Pessoas==null){
+                    Pessoas = [];
+                }
+                return Pessoas;
+            }
+
+            function existe(email) {
+                Pessoas = getPessoas();
+                for (var i = 0; i < Pessoas.length; i++) {
+                    var pessoa = Pessoas[i];
+                    if (pessoa.email == email) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function login(email, senha) {
+                Pessoas = getPessoas();
+                for (var i = 0; i < Pessoas.length; i++) {
+                    var pessoa = Pessoas[i];
+                    if (pessoa.email == email) {
+                        return pessoa.senha == senha;
+                    }
+                }
+                return false;
+            }
+
+            function entrar() {
+                var email = document.getElementById("email").value;
+                var senha = document.getElementById("senha").value;
+                if (login(email, senha)) {
+                    localStorage.setItem("logado", true);
+                    window.location="tela1_dois_jogos.html";
+                } else {
+                    alert("dados incorretos");
+                }
+            }
+
+            function trocaTelas() {
+                $("#login").toggle();
+                $("#cadastro").toggle();
+            }
+
+            function inserir(pessoa) {
+                var Pessoas = getPessoas();
+                Pessoas.push(pessoa);
+                var pessoasTxt = JSON.stringify(Pessoas);
+                localStorage.setItem("pessoas", pessoasTxt);
+            }
+
+            function cadastrar(){
+                var nome = document.getElementById("nomeCadastro").value;
+                var email = document.getElementById("emailCadastro").value;
+                var senha = document.getElementById("senhaCadastro").value;
+
+                if(existe(email)){
+                    alert("Esse email já esta cadastrado!");
+                } else {
+                    var pessoa = {
+                        "nome": nome,
+                        "senha": senha,
+                        "email": email
+                    }
+                    inserir(pessoa);
+                    trocaTelas();
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="tela1_dois_jogos.html">Jogos</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="ranking.html">Ranking</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div> <!--div geral inicio-->
+
+            <div class="container col-md-6 jumbotron ">
+                <h3 align="center" class="texto_login_memoria">Login Ranking</h3>
+            </div>
+
+
+            <form action="javascript:entrar();" class="col-md-3 jumbotron container" id="login" >
+              <div class="form-group">
+                <input type="email" class="form-control" id="email" placeholder="E-mail" required>
+              </div>
+
+              <div class="form-group">
+                <input type="password" class="form-control" id="senha" placeholder="Senha" required>
+                <br/>
+                <button type="submit" class="btn btn-warning btn-lg">Entrar</button>
+                <button onclick="trocaTelas()" class="btn btn-link">Cadastre-se</button>
+              </form>
+
+            </div>
+
+            <form action="javascript:cadastrar();" class="col-md-3 jumbotron container" id="cadastro" style="display: none;">
+              <div class="form-group">
+                <input type="name" class="form-control" id="nomeCadastro" placeholder="Nome" required>
+              </div>
+                <div class="form-group">
+                  <input type="email" class="form-control" id="emailCadastro" placeholder="E-mail" required>
+                </div>
+
+              <div class="form-group">
+                <input type="password" class="form-control" id="senhaCadastro" placeholder="Senha" required>
+                <br/>
+                <button type="submit" class="btn btn-warning btn-lg">Cadastrar</button>
+                <button onclick="trocaTelas()" class="btn btn-link">Login</button>
+              </div>
+
+          </div>
+
+        </div><!--div geral final-->
+    </body>
+</html>

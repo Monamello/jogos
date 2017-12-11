@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Jogo MTM</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="estilo.css">
+
+    <script type="text/javascript">
+	    function operacao() {
+
+	    	var num1ale = Math.floor((Math.random() * 10)+ 1);
+
+	    	var num2ale = Math.floor((Math.random() * 10)+ 1);
+
+	    	var resposta_certa = num1ale + num2ale;
+
+	    	var pergunta = document.getElementById("resposta_tela").innerHTML = ("?");
+	    	var numero1_tela = document.getElementById("num1").innerHTML = (num1ale);
+	    	var numero2_tela = document.getElementById("num2").innerHTML = (num2ale);
+
+			if(resposta_usuario == resposta_certa){
+				alert("ACERTOU!")
+			}
+
+
+	   	}
+
+    	// var mensagem = document.getElementById("res").innerHTML = (nome + "TEXTO E MAIS TEXTO")
+    	// Math.random() * 10)
+    </script>
+</head>
+<body>
+	<div> <!--INICIO-->
+
+
+
+		<div align="center"	>
+			<button class="btn btn-primary" onclick="operacao()">
+				Jogar!
+			</button>
+		</div>
+
+		<br/>
+
+		<div class="container col-xs-6  col-md-6 cabecalho_tela " align="center">
+			<label id="num1">num1</label>
+			+
+			<label id="num2">num2</label>
+			=
+			<label id="resposta_tela">resposta</label>
+		</div>
+
+		<div class="form-control">
+			<input type="number" id="resposta_usuario">
+		</div>
+
+		<div>
+			<button type="button" class="btn btn-primary" onclick="operacao()">Enviar resposta</button>
+		</div>
+
+
+
+
+
+	</div> <!--FIM-->
+	<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script> -->
+</body>
+</html>

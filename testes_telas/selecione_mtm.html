@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <title>Tela2</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="estilo.css">
+        <script type="text/javascript">
+        function nivel() {
+            var nivel
+        }
+
+            function jogar() {
+                document.getElementById("contas").style.display = "block";
+                document.getElementById("opcoes").style.display = "none";
+                
+            }
+        </script>
+    </head>
+    <body>
+        <!--CABEÇALHO-->
+        <div class="container col-xs-12 col-md-12 ">
+            <div align="center">
+                <div class="jumbotron mt-12 cabecalho_tela">
+                    <h1>Jogo de Matemática</h1>
+                </div>
+            </div>
+        </div>
+
+        <div id="opcoes">
+            <div class="form-control col-md-6 cor_verde container">
+                <h5>Selecione o Nível:</h5>
+                <select id="nivel" class="form-control col-md-6 " >
+                    <option id="selecione">Selecione o nível</option>
+                    <option id="nivel1">Nível 1</option>
+                    <option id="nivel2">Nível 2</option>
+                    <option id="nivel3">Nível 3</option>
+                </select>
+            </div>
+            </br>
+
+            </br>
+
+            <!--BOTÃO JOGAR-->
+            <div class="col-md-6  container tam" align="center">
+                <button class="btn btn-success btn-lg btn-block cor_verde"
+                    onclick="jogar()">
+                    Jogar!
+                </button>
+            </div>
+        </div>
+
+
+        <div id="contas" style="display: none">
+            <h1>HELLOOO</h1>
+        </div>
+
+    </body>
+</html>
