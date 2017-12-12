@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="ISO-8859-1">
+		<meta charset="utf-8">
+		<script defer src="font/svg-with-js/js/fontawesome-all.js"></script>
 		<title>Ranking MTM</title>
 		<script>
 			var Mp;
 			var codigoGeral;
+			var bonsPremios = ["PS4", "Notebook", "Ingresso pro Star Wars"];
+			var okPremios = ["Spinner", "Caixa de Bombom", "Ursinho"];
 
 			function init(){
 
@@ -22,12 +25,44 @@
 				montarTabelaHTML();
 			}
 
+			function crescente(a,b) {
+				if (parseInt(a.pontuacao) < parseInt(b.pontuacao))
+					return -1;
+				if (parseInt(a.pontuacao) > parseInt(b.pontuacao))
+					return 1;
+				return 0;
+			}
+
+			function decrescente(a,b) {
+				if (parseInt(a.pontuacao) > parseInt(b.pontuacao))
+					return -1;
+				if (parseInt(a.pontuacao) < parseInt(b.pontuacao))
+					return 1;
+				return 0;
+			}
+
+			function ordenarCrescente() {
+				Mp.sort(crescente);
+				montarTabelaHTML();
+			}
+
+			function ordenarDecrescente() {
+				Mp.sort(decrescente);
+				montarTabelaHTML();
+			}
+
 			function enviar(){
 				//Resgatar dados do formulário
 				var campoNome = document.getElementById("nome");
 				var campoIdade = document.getElementById("idade");
+				var campoPonto = document.getElementById("pontuacao");
 				codigoGeral++;
-				var p = {"id":codigoGeral, "nome":campoNome.value, "idade":campoIdade.value};
+				var p = {
+					"id" : codigoGeral,
+					"nome" : campoNome.value,
+					"idade" : campoIdade.value,
+					"pontuacao": campoPonto.value
+				};
 
 				//Adicionar esta pessoa na Matriz Mp
 				Mp.push(p);
@@ -47,11 +82,12 @@
 				for(var i=0; i<Mp.length; i++){
 					var pessoa = Mp[i];
 					linhas += "<tr>";
-					linhas += "<td>"+i+"</td>";
 					linhas += "<td>"+pessoa.id+"</td>";
 					linhas += "<td>"+pessoa.nome+"</td>";
 					linhas += "<td>"+pessoa.idade+"</td>";
-					linhas += "<td><a href='javascript:void(0)' onclick='excluir("+i+")'>Excluir</a></td>";
+					linhas += "<td>"+pessoa.pontuacao+"</td>";
+					linhas += "<td><a href='javascript:void(0)' onclick='excluir("+i+")'><i class='fas fa-trash-alt'></i></a></td>";
+					linhas += "<td><a href='javascript:void(0)' onclick='pegarPremio("+i+")'><i class='fas fa-gift'></i></a></td>";
 					linhas += "</tr>";
 				}
 				var tbody = document.getElementById("lista");
@@ -75,7 +111,6 @@
 				montarTabelaHTML();
 			}
 
-
 			function pesquisar(){
 				var codPesq = document.getElementById("pesquisa").value;
 				var indicePesq = -1;
@@ -94,19 +129,27 @@
 				}else{
 					alert("Nada encontrado");
 				}
-
 			}
 
-
-			function pesquisaPorIdade(){
-				var idadePesq = prompt("Qual idade pesquisar?");
+			function pesquisaPorInicialNome(){
+				var nome = document.getElementById("pesquisaInicial").value;
 				var Mres = [];
 				for(var i=0; i<Mp.length; i++){
-					if(Mp[i].idade == idadePesq){
+					if(Mp[i].nome.startsWith(nome)){
 						Mres.push(Mp[i]);
 					}
 				}
+				montarTabelaPesquisa(Mres);
+			}
 
+			function pesquisaPorNome(){
+				var nome = document.getElementById("pesquisaNomeCompleto").value;
+				var Mres = [];
+				for(var i=0; i<Mp.length; i++){
+					if(Mp[i].nome == nome){
+						Mres.push(Mp[i]);
+					}
+				}
 				montarTabelaPesquisa(Mres);
 			}
 
@@ -115,28 +158,57 @@
 				for(var i=0; i<Mres.length; i++){
 					var pessoa = Mres[i];
 					linhas += "<tr>";
-					linhas += "<td>"+i+"</td>";
 					linhas += "<td>"+pessoa.id+"</td>";
 					linhas += "<td>"+pessoa.nome+"</td>";
 					linhas += "<td>"+pessoa.idade+"</td>";
-					linhas += "<td><a href='javascript:void(0)' onclick='excluir("+i+")'>Excluir</a></td>";
+					linhas += "<td>"+pessoa.pontuacao+"</td>";
+					linhas += "<td><a href='javascript:void(0)' onclick='excluir("+i+")'><i class='fas fa-trash-alt'></i></a></td>";
+					linhas += "<td><a href='javascript:void(0)' onclick='pegarPremio("+i+")'><i class='fas fa-gift'></i></a></td>";
 					linhas += "</tr>";
 				}
 				var tbody = document.getElementById("lista");
 				tbody.innerHTML = linhas;
 			}
 
+			function fazerMedia() {
+				var soma = 0;
+				for(var i=0; i<Mp.length; i++){
+					var pessoa = Mp[i];
+					soma += parseFloat(pessoa.pontuacao);
+				}
+				return soma/Mp.length;
+			}
+
+			function pegarPremio(indice){
+				var pe = Mp[indice];
+				var media = fazerMedia();
+				if (parseFloat(pe.pontuacao) >= media) {
+	    			var aleatorio = Math.floor((Math.random() * bonsPremios.length));
+					alert("O "+ pe.nome +" ganhou " + bonsPremios[aleatorio]);
+				} else {
+	    			var aleatorio = Math.floor((Math.random() * okPremios.length));
+					alert("O "+ pe.nome +" ganhou " + okPremios[aleatorio]);
+				}
+			}
 		</script>
 	</head>
 	<body onload="init()">
-		<button onclick="pesquisaPorIdade()">Pesquisar por idade</button>
+		<input type="text" id="pesquisaInicial" placeholder="Pesquisar por inicial">
+		<button type="button" name="button" onclick="pesquisaPorInicialNome()"><i class="fas fa-search"></i></button>
+		<br>
+		<input type="text" id="pesquisaNomeCompleto" placeholder="Pesquisar por nome completo">
+		<button type="button" name="button" onclick="pesquisaPorNome()"><i class="fas fa-search"></i></button>
 		<br>
 		<button onclick="montarTabelaHTML()">LIMPAR PESQUISA</button>
 		<br>
-		<button onclick="resetar()">Resetar</button>
+		<button onclick="ordenarCrescente()"><i class="fas fa-sort-amount-up"></i></button>
+		<br>
+		<button onclick="ordenarDecrescente()"><i class="fas fa-sort-amount-down"></i></button>
+		<br>
+		<button onclick="resetar()">Resetar <i class="fas fa-undo"></i></button>
 		<hr>
-		Pesquise um código:
-		<input type="text" id="pesquisa" onblur="pesquisar()">
+		<input type="text" id="pesquisa" placeholder="Pesquise código">
+		<button type="button" name="button" onclick="pesquisar()"><i class="fas fa-search"></i></button>
 
 
 	<br><br>
@@ -151,38 +223,27 @@
 			<input type="text" id="idade">
 		</label>
 		<br>
-		<button onclick="enviar()">Enviar</button>
+
+		<label>
+			Pontuação:
+			<input type="text" id="pontuacao">
+		</label>
+		<br>
+		<button onclick="enviar()">Salvar <i class="fas fa-save"></i></button>
 		<hr>
 		<table border="1">
 			<thead>
 				<tr>
-					<th>Indice</th>
 					<th>Codigo</th>
 					<th>Nome</th>
 					<th>Idade</th>
+					<th>Pontuacao</th>
 					<th>Excluir</th>
+					<th>Premio</th>
 				</tr>
 			</thead>
 			<tbody id="lista">
-				<tr>
-					<td>0</td>
-					<td>1</td>
-					<td>Marcio</td>
-					<td>37</td>
-					<td><a href="javascript:void(0)" onclick="excluir(0)">Excluir</a></td>
-				</tr>
-
-				<tr>
-					<td>1</td>
-					<td>2</td>
-					<td>Pedro</td>
-					<td>29</td>
-					<td><a href="javascript:void(0)" onclick="excluir(1)">Excluir</a></td>
-				</tr>
 			</tbody>
 		</table>
-
-
-
 	</body>
 </html>
