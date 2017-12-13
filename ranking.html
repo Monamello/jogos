@@ -3,6 +3,11 @@
 	<head>
 		<meta charset="utf-8">
 		<script defer src="font/svg-with-js/js/fontawesome-all.js"></script>
+
+		<!-- Bootstrap CSS -->
+	    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	    <link rel="stylesheet" href="estilo.css">
+
 		<title>Ranking MTM</title>
 		<script>
 			var Mp;
@@ -192,58 +197,124 @@
 			}
 		</script>
 	</head>
-	<body onload="init()">
-		<input type="text" id="pesquisaInicial" placeholder="Pesquisar por inicial">
-		<button type="button" name="button" onclick="pesquisaPorInicialNome()"><i class="fas fa-search"></i></button>
-		<br>
-		<input type="text" id="pesquisaNomeCompleto" placeholder="Pesquisar por nome completo">
-		<button type="button" name="button" onclick="pesquisaPorNome()"><i class="fas fa-search"></i></button>
-		<br>
-		<button onclick="montarTabelaHTML()">LIMPAR PESQUISA</button>
-		<br>
-		<button onclick="ordenarCrescente()"><i class="fas fa-sort-amount-up"></i></button>
-		<br>
-		<button onclick="ordenarDecrescente()"><i class="fas fa-sort-amount-down"></i></button>
-		<br>
-		<button onclick="resetar()">Resetar <i class="fas fa-undo"></i></button>
-		<hr>
-		<input type="text" id="pesquisa" placeholder="Pesquise código">
-		<button type="button" name="button" onclick="pesquisar()"><i class="fas fa-search"></i></button>
+		<div class="container">
+
+			<body onload="init()" class="back_ranking">
+
+				<!--CABEÇALHO-->
+			    <div class="container col">
+			      <div align="center">
+			        <div class="jumbotron mt-6 cor_hanking">
+			         <h1>Ranking  <i class="fa fa-trophy" aria-hidden="true"></i></h1>
+			        </div>
+			      </div>
+			  </div>
+
+					<div class="row justify-content-md-center">
+						<div class="cor_hanking tamanho_hanking center col col-md-6">
+							<div class="">
+								<h3>Cadastro</h3>
+							</div>
+							<label>
+								<input type="text" id="nome" placeholder="Nome" class="form-control">
+							</label>
+							<br>
+							<label>
+								<input type="text" id="idade" placeholder="Idade" class="form-control">
+							</label>
+							<br>
+							<label>
+								<input type="text" id="pontuacao" placeholder="Pontuação" class="form-control">
+							</label>
+							<br>
+							<button class="btn btn-dark btn-lg" onclick="enviar()">Salvar <i class="fas fa-save" ></i></button>
+						</div>
+					</div>
+
+				<hr>
 
 
-	<br><br>
-		<label>
-			Nome:
-			<input type="text" id="nome">
-		</label>
-		<br>
+				<div class="row justify-content-md-center">
+					<div class="cor_hanking tamanho_hanking center col col-md-6">
+						<div class="">
+							<h3>Pesquisa</h3>
+						</div>
+						<div class="container cor_hanking tamanho_hanking center col col-md-6">
+							<!--PESQUISA POR NOME-->
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-inline input_pesquisa">
+										<div class="form-group input_pesquisa">
+											<input type="text" id="pesquisaInicial" placeholder="Pesquisar por inicial" class="form-control input_espaco">
+											<button class="btn btn-dark " onclick="pesquisaPorInicialNome()"><i class="fas fa-search"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-inline input_pesquisa">
+										<div class="form-group">
+											<input type="text" id="pesquisaNomeCompleto" placeholder="Pesquisar por nome completo" class="form-control input_espaco">
+											<button class="btn btn-dark " onclick="pesquisaPorNome()"><i class="fas fa-search"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--PESQUISAR CÓDIGO-->
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-inline input_pesquisa">
+										<div class="form-group">
+											<input type="text" id="pesquisa" placeholder="Pesquise código" class="form-control input_espaco">
+											<button  class="btn btn-dark" type="button" name="button" onclick="pesquisar()"><i class="fas fa-search"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
 
-		<label>
-			Idade:
-			<input type="text" id="idade">
-		</label>
-		<br>
+							<!--BOTÕES-->
+						<div class="row justify-content-md-center">
+							<div class=" tamanho_hanking center col col-md-6">
+								<label>
+									<button onclick="montarTabelaHTML()" class="btn btn-dark">Limpar Pesquisar</button>
+								</label>
+								<br>
+								<label>
+									<button onclick="ordenarCrescente()" class="btn btn-dark"><i class="fas fa-sort-amount-up"></i></button>
+									<!--BOTÃO ORDEM DECRESCENTE-->
+									<button onclick="ordenarDecrescente()" class="btn btn-dark"><i class="fas fa-sort-amount-down"></i></button>
+								</label>
+								<br>
+								<label>
+									<button onclick="resetar()" class="btn btn-dark">Resetar <i class="fas fa-undo"></i></button>
+								</label>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
 
-		<label>
-			Pontuação:
-			<input type="text" id="pontuacao">
-		</label>
-		<br>
-		<button onclick="enviar()">Salvar <i class="fas fa-save"></i></button>
-		<hr>
-		<table border="1">
-			<thead>
-				<tr>
-					<th>Codigo</th>
-					<th>Nome</th>
-					<th>Idade</th>
-					<th>Pontuacao</th>
-					<th>Excluir</th>
-					<th>Premio</th>
-				</tr>
-			</thead>
-			<tbody id="lista">
-			</tbody>
-		</table>
+				<hr>
+
+				<table border="1" class="table table-striped table-dark">
+					<thead class="thead-dark">
+						<tr>
+							<th>Código</th>
+							<th>Nome</th>
+							<th>Idade</th>
+							<th>Pontuacao</th>
+							<th>Excluir</th>
+							<th>Premio</th>
+						</tr>
+					</thead>
+					<tbody id="lista">
+					</tbody>
+				</table>
+		</div>
 	</body>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+</body>
 </html>

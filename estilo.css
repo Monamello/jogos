@@ -155,3 +155,27 @@ padding-bottom:15px;
     border:0;
     color: black;
 }
+
+.cor_hanking{
+    background-color: #53868B;
+}
+.cor_campos{
+    background-color: black;
+}
+
+.tamanho_hanking{
+    padding: 10px;
+    padding-top: 15px;
+}
+
+.input_pesquisa{
+    /*margin-top: 5px;*/
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+.input_espaco{
+    margin-right: 2px;
+}
+/*.back_ranking{
+    background-color: #4F4F4F;
+}*/
