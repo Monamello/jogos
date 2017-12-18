@@ -9,10 +9,48 @@
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="estilo.css">
         <script src="geral.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            var Mp;
+            var codigoGeral;
+
+            function init(){
+                codigoGeral = localStorage.getItem("codigoGeralM");
+                if(codigoGeral==null){
+                    codigoGeral = 0;
+                }
+
+                var dadosTxt = localStorage.getItem("dadosM");
+                Mp = JSON.parse(dadosTxt);
+                if(Mp==null){
+                    Mp = [];
+                }
+            }
+
+            function enviar(nome, pontuacao){
+                //Resgatar dados do formulário
+                codigoGeral++;
+                var p = {
+                    "id" : codigoGeral,
+                    "nome" : nome,
+                    "email" : localStorage.getItem("email"),
+                    "pontuacao": pontuacao
+                };
+
+                //Adicionar esta pessoa na Matriz Mp
+                Mp.push(p);
+                salvar();
+            }
+
+            function salvar(){
+                var MpTXT = JSON.stringify(Mp);
+                localStorage.setItem("dadosM", MpTXT);
+                localStorage.setItem("codigoGeralM", codigoGeral);
+            }
+        </script>
       </head>
-      <body>
+      <body onload="init()">
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="tela1_dois_jogos.html">Jogos</a>
+            <a class="navbar-brand" href="inicial.html">Jogos</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -55,24 +93,33 @@
     			</div>
     		</div>
             <!--CARTÕES JOGO-->
-            <div class="container" id="jogo"></div>
+            <div class="container fundo_cartao jumbotron" id="jogo">
+                <div class="container" ></div>
+            </div>
 
         </div><!--div geral final-->
 
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
         <script type="text/javascript">
-            var logado = localStorage.getItem("logado");
-            if (! logado) {
-                window.location="login.html";
-            }
             var acertos = 0;
             var erros = 0;
+
+        function salvarNoRanking(nome, acertos, erros) {
+
+            var nivel = document.getElementById("nivel").selectedIndex;
+
+            var pontuacao = (acertos - erros) * nivel;
+
+            enviar(nome, pontuacao)
+        }
 
             function acertou() {
                 $(".ativo").addClass("acerto").removeClass("ativo");
                 acertos++;
                 var quantidade_cartas = $(".cartao").length;
                 if ((quantidade_cartas/2) == acertos) {
+                    var nome = prompt("Qual seu nome?");
+                    salvarNoRanking(nome, acertos, erros)
                     alert("UHUL, JOGO ACABOU!");
                 }
             }

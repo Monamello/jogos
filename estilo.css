@@ -176,6 +176,12 @@ padding-bottom:15px;
 .input_espaco{
     margin-right: 2px;
 }
-/*.back_ranking{
-    background-color: #4F4F4F;
-}*/
+.fundo_titulos2{
+	background-color: #CD853F;
+}
+
+.fundo_cartao{
+    background-color: #EECFA1;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}

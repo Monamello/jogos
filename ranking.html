@@ -12,22 +12,24 @@
 		<script>
 			var Mp;
 			var codigoGeral;
+			var codigoGeralM;
 			var bonsPremios = ["PS4", "Notebook", "Ingresso pro Star Wars"];
 			var okPremios = ["Spinner", "Caixa de Bombom", "Ursinho"];
 
 			function init(){
 
-				codigoGeral = localStorage.getItem("codigoGeral");
-				if(codigoGeral==null){
-					codigoGeral = 0;
-				}
-
-				var dadosTxt = localStorage.getItem("dados");
+				var dadosTxt = localStorage.getItem("dadosMtm");
 				Mp = JSON.parse(dadosTxt);
 				if(Mp==null){
 					Mp = [];
 				}
-				montarTabelaHTML();
+
+				var dadosMemoria = localStorage.getItem("dadosM");
+				Mpm = JSON.parse(dadosMemoria);
+				if(Mpm==null){
+					Mpm = [];
+				}
+				montarTabelasHTML();
 			}
 
 			function crescente(a,b) {
@@ -48,54 +50,51 @@
 
 			function ordenarCrescente() {
 				Mp.sort(crescente);
-				montarTabelaHTML();
+				Mpm.sort(crescente);
+				montarTabelasHTML();
 			}
 
 			function ordenarDecrescente() {
 				Mp.sort(decrescente);
-				montarTabelaHTML();
-			}
-
-			function enviar(){
-				//Resgatar dados do formulário
-				var campoNome = document.getElementById("nome");
-				var campoIdade = document.getElementById("idade");
-				var campoPonto = document.getElementById("pontuacao");
-				codigoGeral++;
-				var p = {
-					"id" : codigoGeral,
-					"nome" : campoNome.value,
-					"idade" : campoIdade.value,
-					"pontuacao": campoPonto.value
-				};
-
-				//Adicionar esta pessoa na Matriz Mp
-				Mp.push(p);
-				salvar();
-
-				montarTabelaHTML();
+				Mpm.sort(decrescente);
+				montarTabelasHTML();
 			}
 
 			function salvar(){
 				var MpTXT = JSON.stringify(Mp);
-				localStorage.setItem("dados", MpTXT);
-				localStorage.setItem("codigoGeral", codigoGeral);
+				localStorage.setItem("dadosMtm", MpTXT);
+
+				var MpTXT = JSON.stringify(Mpm);
+				localStorage.setItem("dadosM", MpTXT);
 			}
 			//MONTA TABELA -------------------
-			function montarTabelaHTML(){
+			function montarTabelasHTML(){
 				var linhas = "";
 				for(var i=0; i<Mp.length; i++){
 					var pessoa = Mp[i];
 					linhas += "<tr>";
 					linhas += "<td>"+pessoa.id+"</td>";
 					linhas += "<td>"+pessoa.nome+"</td>";
-					linhas += "<td>"+pessoa.idade+"</td>";
+					linhas += "<td>"+pessoa.email+"</td>";
 					linhas += "<td>"+pessoa.pontuacao+"</td>";
 					linhas += "<td><a href='javascript:void(0)' onclick='excluir("+i+")'><i class='fas fa-trash-alt'></i></a></td>";
-					linhas += "<td><a href='javascript:void(0)' onclick='pegarPremio("+i+")'><i class='fas fa-gift'></i></a></td>";
 					linhas += "</tr>";
 				}
 				var tbody = document.getElementById("lista");
+				tbody.innerHTML = linhas;
+
+				var linhas = "";
+				for(var i=0; i<Mpm.length; i++){
+					var pessoa = Mpm[i];
+					linhas += "<tr>";
+					linhas += "<td>"+pessoa.id+"</td>";
+					linhas += "<td>"+pessoa.nome+"</td>";
+					linhas += "<td>"+pessoa.email+"</td>";
+					linhas += "<td>"+pessoa.pontuacao+"</td>";
+					linhas += "<td><a href='javascript:void(0)' onclick='excluirM("+i+")'><i class='fas fa-trash-alt'></i></a></td>";
+					linhas += "</tr>";
+				}
+				var tbody = document.getElementById("listaM");
 				tbody.innerHTML = linhas;
 			}
 
@@ -105,35 +104,27 @@
 				if(conf==true){
 					Mp.splice(indice, 1);
 				}
+				localStorage.setItem("codigoGeralMtm", 0);
 				salvar();
-				montarTabelaHTML();
+				montarTabelasHTML();
+			}
+
+			function excluirM(indice){
+				var pe = Mpm[indice];
+				var conf = confirm("Deseja excluir o "+pe.nome+"?");
+				if(conf==true){
+					Mpm.splice(indice, 1);
+				}
+				localStorage.setItem("codigoGeralM", 0);
+				salvar();
+				montarTabelasHTML();
 			}
 
 			function resetar(){
 				Mp = [];
 				codigoGeral = 0;
 				salvar();
-				montarTabelaHTML();
-			}
-
-			function pesquisar(){
-				var codPesq = document.getElementById("pesquisa").value;
-				var indicePesq = -1;
-
-				for(var i=0; i<Mp.length; i++){
-					var pe = Mp[i];
-					if(pe.id == codPesq){
-						indicePesq = i;
-						break;
-					}
-				}
-
-				if(indicePesq!=-1){
-					var pessoaPesq = Mp[indicePesq];
-					alert(pessoaPesq.nome+" "+pessoaPesq.idade);
-				}else{
-					alert("Nada encontrado");
-				}
+				montarTabelasHTML();
 			}
 
 			function pesquisaPorInicialNome(){
@@ -144,7 +135,15 @@
 						Mres.push(Mp[i]);
 					}
 				}
-				montarTabelaPesquisa(Mres);
+
+				var Mres2 = [];
+				for(var i=0; i<Mpm.length; i++){
+					if(Mpm[i].nome.startsWith(nome)){
+						Mres2.push(Mpm[i]);
+					}
+				}
+
+				montarTabelaPesquisa(Mres, Mres2);
 			}
 
 			function pesquisaPorNome(){
@@ -155,52 +154,67 @@
 						Mres.push(Mp[i]);
 					}
 				}
-				montarTabelaPesquisa(Mres);
+				var Mres2 = [];
+				for(var i=0; i<Mpm.length; i++){
+					if(Mpm[i].nome == nome){
+						Mres2.push(Mpm[i]);
+					}
+				}
+				montarTabelaPesquisa(Mres, Mres2);
 			}
 
-			function montarTabelaPesquisa(Mres){
+			function montarTabelaPesquisa(Mres, Mres2){
 				var linhas = "";
 				for(var i=0; i<Mres.length; i++){
 					var pessoa = Mres[i];
 					linhas += "<tr>";
 					linhas += "<td>"+pessoa.id+"</td>";
 					linhas += "<td>"+pessoa.nome+"</td>";
-					linhas += "<td>"+pessoa.idade+"</td>";
+					linhas += "<td>"+pessoa.email+"</td>";
 					linhas += "<td>"+pessoa.pontuacao+"</td>";
 					linhas += "<td><a href='javascript:void(0)' onclick='excluir("+i+")'><i class='fas fa-trash-alt'></i></a></td>";
-					linhas += "<td><a href='javascript:void(0)' onclick='pegarPremio("+i+")'><i class='fas fa-gift'></i></a></td>";
 					linhas += "</tr>";
 				}
 				var tbody = document.getElementById("lista");
 				tbody.innerHTML = linhas;
-			}
 
-			function fazerMedia() {
-				var soma = 0;
-				for(var i=0; i<Mp.length; i++){
-					var pessoa = Mp[i];
-					soma += parseFloat(pessoa.pontuacao);
+				var linhas = "";
+				for(var i=0; i<Mres2.length; i++){
+					var pessoa = Mres2[i];
+					linhas += "<tr>";
+					linhas += "<td>"+pessoa.id+"</td>";
+					linhas += "<td>"+pessoa.nome+"</td>";
+					linhas += "<td>"+pessoa.email+"</td>";
+					linhas += "<td>"+pessoa.pontuacao+"</td>";
+					linhas += "<td><a href='javascript:void(0)' onclick='excluirM("+i+")'><i class='fas fa-trash-alt'></i></a></td>";
+					linhas += "</tr>";
 				}
-				return soma/Mp.length;
-			}
-
-			function pegarPremio(indice){
-				var pe = Mp[indice];
-				var media = fazerMedia();
-				if (parseFloat(pe.pontuacao) >= media) {
-	    			var aleatorio = Math.floor((Math.random() * bonsPremios.length));
-					alert("O "+ pe.nome +" ganhou " + bonsPremios[aleatorio]);
-				} else {
-	    			var aleatorio = Math.floor((Math.random() * okPremios.length));
-					alert("O "+ pe.nome +" ganhou " + okPremios[aleatorio]);
-				}
+				var tbody = document.getElementById("listaM");
+				tbody.innerHTML = linhas;
 			}
 		</script>
 	</head>
-		<div class="container">
 
 			<body onload="init()" class="back_ranking">
+				<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="inicial.html">Jogos</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="ranking.html">Ranking</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+		<div class="container">
 				<!--CABEÇALHO-->
 			    <div class="container col">
 			      <div align="center">
@@ -209,30 +223,6 @@
 			        </div>
 			      </div>
 			  </div>
-
-					<div class="row justify-content-md-center">
-						<div class="cor_hanking tamanho_hanking center col col-md-6">
-							<div class="">
-								<h3>Cadastro</h3>
-							</div>
-							<label>
-								<input type="text" id="nome" placeholder="Nome" class="form-control">
-							</label>
-							<br>
-							<label>
-								<input type="text" id="idade" placeholder="Idade" class="form-control">
-							</label>
-							<br>
-							<label>
-								<input type="text" id="pontuacao" placeholder="Pontuação" class="form-control">
-							</label>
-							<br>
-							<button class="btn btn-dark btn-lg" onclick="enviar()">Salvar <i class="fas fa-save" ></i></button>
-						</div>
-					</div>
-
-				<hr>
-
 
 				<div class="row justify-content-md-center">
 					<div class="cor_hanking tamanho_hanking center col col-md-6">
@@ -261,23 +251,12 @@
 									</div>
 								</div>
 							</div>
-							<!--PESQUISAR CÓDIGO-->
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-inline input_pesquisa">
-										<div class="form-group">
-											<input type="text" id="pesquisa" placeholder="Pesquise código" class="form-control input_espaco">
-											<button  class="btn btn-dark" type="button" name="button" onclick="pesquisar()"><i class="fas fa-search"></i></button>
-										</div>
-									</div>
-								</div>
-							</div>
 
 							<!--BOTÕES-->
 						<div class="row justify-content-md-center">
 							<div class=" tamanho_hanking center col col-md-6">
 								<label>
-									<button onclick="montarTabelaHTML()" class="btn btn-dark">Limpar Pesquisar</button>
+									<button onclick="montarTabelasHTML()" class="btn btn-dark">Limpar Pesquisar</button>
 								</label>
 								<br>
 								<label>
@@ -297,18 +276,35 @@
 
 				<hr>
 
+				<h1>MATEMATICA</h1>
+
 				<table border="1" class="table table-striped table-dark">
 					<thead class="thead-dark">
 						<tr>
 							<th>Código</th>
 							<th>Nome</th>
-							<th>Idade</th>
+							<th>Email</th>
 							<th>Pontuacao</th>
 							<th>Excluir</th>
-							<th>Premio</th>
 						</tr>
 					</thead>
 					<tbody id="lista">
+					</tbody>
+				</table>
+
+				<h1>MEMORIA</h1>
+
+				<table border="1" class="table table-striped table-dark">
+					<thead class="thead-dark">
+						<tr>
+							<th>Código</th>
+							<th>Nome</th>
+							<th>Email</th>
+							<th>Pontuacao</th>
+							<th>Excluir</th>
+						</tr>
+					</thead>
+					<tbody id="listaM">
 					</tbody>
 				</table>
 		</div>
